@@ -1,8 +1,11 @@
-name: Build Estrella Magica Fugaz
+name: estrella magica
+
+# Basta con subir el .zip del mod al repositorio (sin descomprimir).
+# El workflow lo abre, compila y te deja el .jar en Actions -> Artifacts.
+# Tambien funciona si subes el proyecto ya descomprimido.
 
 on:
   push:
-    branches: [ main, master ]
   pull_request:
   workflow_dispatch:
 
@@ -11,15 +14,86 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: 17
+
       - uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: '8.1.1'
-      - run: gradle build --no-daemon
+          gradle-version: 8.1.1
+
+      - name: Preparar y compilar
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist work
+
+          build_project() {
+            local dir="$1"
+            echo "::group::Compilando $dir"
+            (
+              cd "$dir"
+              if [ -f gradlew ]; then
+                chmod +x gradlew
+                ./gradlew build --no-daemon
+              else
+                gradle build --no-daemon
+              fi
+            )
+            if [ -d "$dir/build/libs" ]; then
+              find "$dir/build/libs" -maxdepth 1 -name '*.jar' \
+                ! -name '*-sources.jar' ! -name '*-javadoc.jar' \
+                -exec cp -v {} dist/ \;
+            fi
+            echo "::endgroup::"
+          }
+
+          found=0
+
+          # 1) Cada .zip del repo se descomprime y se compila
+          while IFS= read -r -d '' zip; do
+            name="$(basename "$zip" .zip)"
+            echo "Encontrado zip: $zip"
+            mkdir -p "work/$name"
+            unzip -q -o "$zip" -d "work/$name"
+            # build.gradle puede estar en la raiz del zip o dentro de una carpeta
+            gradle_file="$(find "work/$name" -name build.gradle -not -path '*/build/*' -print -quit)"
+            if [ -z "$gradle_file" ]; then
+              echo "::warning::$zip no contiene build.gradle, se ignora."
+              continue
+            fi
+            build_project "$(dirname "$gradle_file")"
+            found=1
+          done < <(find . -maxdepth 3 -name '*.zip' -not -path './.git/*' -not -path './work/*' -print0)
+
+          # 2) Si no hay zips, compila el proyecto tal cual esta en el repo
+          if [ "$found" -eq 0 ]; then
+            gradle_file="$(find . -name build.gradle -not -path './work/*' -not -path '*/build/*' -not -path './.git/*' -print -quit)"
+            if [ -z "$gradle_file" ]; then
+              echo "::error::No hay ningun .zip ni build.gradle en el repositorio."
+              exit 1
+            fi
+            build_project "$(dirname "$gradle_file")"
+          fi
+
+          # 3) Comprobar que el jar no esta vacio
+          if ! ls dist/*.jar >/dev/null 2>&1; then
+            echo "::error::No se genero ningun .jar."
+            exit 1
+          fi
+          for jar in dist/*.jar; do
+            classes="$(unzip -l "$jar" | grep -c '\.class' || true)"
+            echo "$jar -> $classes clases"
+            if [ "$classes" -eq 0 ]; then
+              echo "::error::$jar no contiene clases (el codigo fuente no se encontro)."
+              exit 1
+            fi
+          done
+
       - uses: actions/upload-artifact@v4
         with:
-          name: estrella-magica-fugaz-jar
-          path: build/libs/*.jar
+          name: mod-jar
+          path: dist/*.jar
+          if-no-files-found: error
