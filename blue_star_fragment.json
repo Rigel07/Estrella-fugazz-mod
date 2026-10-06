@@ -1,0 +1,4 @@
+{
+  "parent": "item/generated",
+  "textures": { "layer0": "estrella_magica_fugaz:item/blue_star_fragment" }
+}

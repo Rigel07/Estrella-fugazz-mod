@@ -1,0 +1,19 @@
+{
+  "itemGroup.estrella_magica_fugaz": "Estrella Mágica Fugaz",
+  "entity.estrella_magica_fugaz.shooting_star": "Estrella fugaz",
+
+  "item.estrella_magica_fugaz.blue_star_fragment": "Fragmento de estrella azul",
+  "item.estrella_magica_fugaz.pink_star_fragment": "Fragmento de estrella rosa",
+  "item.estrella_magica_fugaz.green_star_fragment": "Fragmento de estrella verde",
+  "item.estrella_magica_fugaz.yellow_star_fragment": "Fragmento de estrella amarilla",
+
+  "item.estrella_magica_fugaz.celestial_heart": "Corazón celeste",
+  "item.estrella_magica_fugaz.stellar_petal": "Pétalo estelar",
+  "item.estrella_magica_fugaz.cosmic_emerald_shard": "Esquirla esmeralda cósmica",
+  "item.estrella_magica_fugaz.solar_spark": "Chispa solar",
+
+  "item.estrella_magica_fugaz.celestial_heart.tooltip": "Clic derecho: Velocidad II y Caída lenta (90 s)",
+  "item.estrella_magica_fugaz.stellar_petal.tooltip": "Clic derecho: Regeneración III y Absorción (2 min)",
+  "item.estrella_magica_fugaz.cosmic_emerald_shard.tooltip": "Clic derecho: Visión nocturna y Suerte III",
+  "item.estrella_magica_fugaz.solar_spark.tooltip": "Clic derecho: Fuerza II y Prisa II (60 s)"
+}

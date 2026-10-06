@@ -1,0 +1,19 @@
+{
+  "itemGroup.estrella_magica_fugaz": "Magic Shooting Star",
+  "entity.estrella_magica_fugaz.shooting_star": "Shooting Star",
+
+  "item.estrella_magica_fugaz.blue_star_fragment": "Blue Star Fragment",
+  "item.estrella_magica_fugaz.pink_star_fragment": "Pink Star Fragment",
+  "item.estrella_magica_fugaz.green_star_fragment": "Green Star Fragment",
+  "item.estrella_magica_fugaz.yellow_star_fragment": "Yellow Star Fragment",
+
+  "item.estrella_magica_fugaz.celestial_heart": "Celestial Heart",
+  "item.estrella_magica_fugaz.stellar_petal": "Stellar Petal",
+  "item.estrella_magica_fugaz.cosmic_emerald_shard": "Cosmic Emerald Shard",
+  "item.estrella_magica_fugaz.solar_spark": "Solar Spark",
+
+  "item.estrella_magica_fugaz.celestial_heart.tooltip": "Right click: Speed II and Slow Falling (90 s)",
+  "item.estrella_magica_fugaz.stellar_petal.tooltip": "Right click: Regeneration III and Absorption (2 min)",
+  "item.estrella_magica_fugaz.cosmic_emerald_shard.tooltip": "Right click: Night Vision and Luck III",
+  "item.estrella_magica_fugaz.solar_spark.tooltip": "Right click: Strength II and Haste II (60 s)"
+}
